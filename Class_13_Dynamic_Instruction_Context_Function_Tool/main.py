@@ -36,7 +36,7 @@ def user_age(ctx: RunContextWrapper[User_info]):
 
 # ctx: RunContextWrapper[User_info] => ctx ke andar RunContextWrapper ke anadr aya data hai jo ke User_info class ke object se aa rha hai.
 # [User_info] => ye data type btata hai ke ye function kis type ka context lega.
-         
+         /
 def dynamic_instruction(ctx: RunContextWrapper[User_info], agent: Agent)-> str: # 3 ye us data ki tanki ka null hai jis se data nikalty hain RunContextWrapper ke zariye jahn chahy access kar sakty hain. agent likh kar paramater mein agent ko ko function ke bare mein bata rhy hain.
     return f"when user asked for age you use user_age tool and user name is {ctx.context.name}" # ctx ke andar context wrapper ke andar aya object hai jiske andar se name ki value get kar rhy hain.
 
