@@ -1,3 +1,9 @@
+User Prompt      -> user query
+System Prompt    -> agent persona
+Tools            -> handoffs/as_tools/function_tool
+Tool_description -> tool call se aya return
+
+
 1. Swarm ke andar just gpt ke models laga sakty thy but SDK mein GEMINI or baqi models bhi laga sakty hain
    Agent SDK upgraded version hai swarm ka.
 
@@ -126,4 +132,205 @@ Agent SDK -> Experiment
 17. trace -> have multiple spans.
     hmara jo Runner agent se kaam krwa kar jawab deta hai usy trace kehty hain. but wo jo kaam complete krwata hai usme bohut sary kaam huy hoty hain matlab agent tools call karta hai or handoff karta hai to in sab ka aik aik span banta jata hai. ye sari cheezen ham verbose se dekh kar debug kar sakty hain.
 
-18. LLM -> handoff ko nahi samjhta isliye hmara handoff wala agent bhi tool ki  shakal mein jata hai LLM ke pass.         
+18. LLM -> handoff ko nahi samjhta isliye hmara handoff wala agent bhi tool ki  shakal mein jata hai LLM ke pass. 
+
+19. input_filter=handoff_filters.remove_all_tools -> ye import hota hai
+    iska kaam ye hai ke conversation history mein tool call ki history or tool calls ka output wo sab khatam kar deta hai.
+
+20. handoffs agents + as_tool agents
+    in dono main faraq ye hai ke handoffs mein jab triage agent mein tool call hota hai to to dosra agent aa kar triage agent ki jagah sambhal leta hai matlab triage agent hatt jata hai or sara control us dosry handoffs kiyye gaye agent ke pass aa jata hai.
+    lekin jab ham agent ko as_tool bana kar pass karte hain to jo hmara triage_agent hai sara control usi ke pass rehta hai baqi ke agent sara kaam kar ke usko laa kar dety hain.
+    aik or main baat handoffs mein LLM jab tool call karne ke liye kehta hai to aik time mein sirf aik hi agent ko call kar sakty hain kiyun ke aik hatega to dosra aa kar uski jagah bethega.
+    but agr ham agents ko as_tool bnaty hain to LLM aik sath sary as_tool agents ko paralal mein run karwa sakta hai aik sath.
+
+21. is_enabled=False  -> isko False rakhny se ye handoff function ko ko aagy pass nahi karega matlab ye function bana hi  nahi aisy lagega matlan function On/Off -> by-default ye True hota hai matlab aagy pass hota hai.
+
+22. input_filter -> ye streaming mein work nahi karta.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------------------------------------
+Agent SDK -> Verbose showing agent llm working flow -> 1 turn flow
+
+PSD:\GOVERNER HOUSE\SIR TAHA CLASSES\PIAIC_AGENTIC_AI_CLasses_Q2\Class_19_handoff_details_Code_2> uv run app.py -> run 
+Creating trace Agent workflow with id trace_bd0b8b45b3a445d282e5f7def2cbafcf -> OpenAi dashboard pe ye Complete trace create hua hoga.
+Setting current trace: trace_bd0b8b45b3a445d282e5f7def2cbafcf
+Creating span <agents.tracing.span_data.AgentSpanData object at 0x000002C023B2BE80> with id None -> Agent span
+Running agent triage_agent (turn 1)->Agent aik dafa apna sab kuch llm ke pass laya or llm ne response diyya ye 1 turn hai.
+Creating span <agents.tracing.span_data.ResponseSpanData object at 0x000002C0223D3050> with id Non  e -> response span
+Calling LLM gpt-4.1-mini with input: -> Agent LLm ko call kar ke keh rha hai ke 
+[
+  {
+    "content": "hi", -> mere pass user ka question hai
+    "role": "user"   -> user ne ye kaha hai
+  }
+]
+Tools:  -> mere pass ye aik Agent bhi hai jisko ye tool bana kar llm ko dihaa rha hai.
+[
+  {
+    "name": "transfer_to_customer_support", -> Agent tool name
+    "parameters": {
+      "additionalProperties": false,
+      "type": "object",
+      "properties": {},
+      "required": []
+    },
+    "strict": true,
+    "type": "function",
+    "description": "Handoff to the customer_support agent to handle the request. "
+  }
+]
+Stream: False  -> streaming nahi ho rhi.
+Tool choice: NOT_GIVEN -> ye bhi nahi diyyya hamne
+Response format: NOT_GIVEN -> ye bhi nahi diyyya hamne
+Previous response id: None -> ye bhi nahi diyyya hamne
+
+LLM resp:  -> Ab LLM ne wo sab cheezen dekh kar jo Agent ne di thi uske mutabik response create kar ke diyya hai.
+[
+  {
+    "id": "msg_686bc057a8d4819aa4d0d3b98e78bb0e05cd14ab2ea7a09d", -> tracking id ye hai
+    "content": [
+      {
+        "annotations": [],
+        "text": "Hello! How can I assist you today?", -> ye answer hai jo LLM ne diyyya hai user ke question ka
+        "type": "output_text",
+        "logprobs": []
+      }
+    ],
+    "role": "assistant",  -> ye jawab LLM ne diyya
+    "status": "completed", -> Completed quesry
+    "type": "message"
+  }
+]
+
+Resetting current trace
+Shutting down trace provider
+Shutting down trace processor <agents.tracing.processors.BatchTraceProcessor object at 0x000002C0222B5400>
+Exported 1 items
+Exported 2 items
+PS D:\GOVERNER HOUSE\SIR TAHA CLASSES\PIAIC_AGENTIC_AI_CLasses_Q2\Class_19_handoff_details_Code_2>
+
+
+----------------------------------------------------------------------------------------------------
+Agent SDK -> Verbose showing agent llm working flow -> 2 turn flow
+
+
+D:\GOVERNER HOUSE\SIR TAHA CLASSES\PIAIC_AGENTIC_AI_CLasses_Q2\Class_19_handoff_details_Code_2> uv run app.py -> run
+Creating trace Agent workflow with id trace_5fcc9a20465c4f02b5fdeea4fd6eae0b -> OpenAi dashboard pe ye Complete trace 
+Setting current trace: trace_5fcc9a20465c4f02b5fdeea4fd6eae0b
+Creating span <agents.tracing.span_data.AgentSpanData object at 0x000001A466BEC280> with id None -> Agent span
+Running agent triage_agent (turn 1)
+Creating span <agents.tracing.span_data.ResponseSpanData object at 0x000001A466BD2710> with id None -> response span
+Calling LLM gpt-4.1-mini with input: => Agent LLm ko call kar ke keh rha hai ke 
+[
+  {
+    "content": "call customer_support tool, i Need help", => mere pass user ka question hai
+    "role": "user" -> user ne ye kaha hai
+  }
+]
+Tools: => mere pass ye aik Agent bhi hai jisko ye tool bana kar llm ko dihaa rha hai.
+[
+  {
+    "name": "transfer_to_customer_support", -> Agent tool name
+    "parameters": {
+      "additionalProperties": false,
+      "type": "object",
+      "properties": {},
+      "required": []
+    },
+    "strict": true,
+    "type": "function",
+    "description": "Handoff to the customer_support agent to handle the request. "
+  }
+]
+Stream: False  -> streaming nahi ho rhi.
+Tool choice: NOT_GIVEN -> ye bhi nahi diyyya hamne
+Response format: NOT_GIVEN -> ye bhi nahi diyyya hamne
+Previous response id: None -> ye bhi nahi diyyya hamne
+
+LLM resp: => LLM ne response diyya ke user ki query ke mutabik apke pass ye tool hai isko call karo or return la do mujhe.
+[
+  {
+    "arguments": "{}",
+    "call_id": "call_xvckE2WC2qrIBmHW9bkiw0KZ", -> calling id ye hai
+    "name": "transfer_to_customer_support",  => jisko call karna hai wo ye agent tool hai
+    "type": "function_call", => matlab isko call karo
+    "id": "fc_686bc35478e4819abc566d4a08ba50030dbcfdaa9e60e06c",
+    "status": "completed"
+  }
+]
+
+Creating span <agents.tracing.span_data.HandoffSpanData object at 0x000001A466BD1950> with id None -> handoff span
+Creating span <agents.tracing.span_data.AgentSpanData object at 0x000001A46714A5D0> with id None -> Agent span
+Running agent customer_support (turn 2) => ab triage agent hatt gaya or uski jagah customer_support agent aa kar beth gaya
+Creating span <agents.tracing.span_data.ResponseSpanData object at 0x000001A467117E90> with id None
+Calling LLM gpt-4.1-mini with input: => customer_support agent llm ko call kar rha hai.
+[
+  {
+    "content": "call customer_support tool, i Need help", -> wahi user ki quesry dikha rha hai
+    "role": "user"
+  },
+  {   => ye object history wala object hai jab LLM ne triage agent ko tool agent call karne ko kaha tha or ye dubara hamen
+      isliye show ho rha hai kiyunke handoff karty hi sari conversation history bhi dosry agent ko mil jati hai. 
+    "arguments": "{}",
+    "call_id": "call_xvckE2WC2qrIBmHW9bkiw0KZ",
+    "name": "transfer_to_customer_support",
+    "type": "function_call",
+    "id": "fc_686bc35478e4819abc566d4a08ba50030dbcfdaa9e60e06c",
+    "status": "completed"
+  },
+  {
+    "call_id": "call_xvckE2WC2qrIBmHW9bkiw0KZ",
+    "output": "{\"assistant\": \"customer_support\"}", => isko call karna hai wo ye agent tool hai
+    "type": "function_call_output"
+  }
+]
+Tools:  => is handoff agent ke pass koi tool nahi isliye ye khali hai.
+[]
+Stream: False
+Tool choice: NOT_GIVEN
+Response format: NOT_GIVEN
+Previous response id: None
+
+Exported 4 items
+LLM resp:  => LLm ne response diyya handoff agent chlany ke bad.
+[
+  {
+    "id": "msg_686bc35809ec819a980f66dcd93e2cde0dbcfdaa9e60e06c",
+    "content": [
+      {
+        "annotations": [], => neechy line wala jawab llm ne diyya hai handoff agent ke return ke mutabik.
+        "text": "I am transferring you to a customer support agent who will assist you further. Please hold on a moment.",
+        "type": "output_text",
+        "logprobs": []
+      }
+    ],
+    "role": "assistant",
+    "status": "completed",
+    "type": "message"
+  }
+]
+
+Resetting current trace
+Shutting down trace provider
+Shutting down trace processor <agents.tracing.processors.BatchTraceProcessor object at 0x000001A465139400>
+Exported 2 items
+PS D:\GOVERNER HOUSE\SIR TAHA CLASSES\PIAIC_AGENTIC_AI_CLasses_Q2\Class_19_handoff_details_Code_2> 
+
+
+
+
+

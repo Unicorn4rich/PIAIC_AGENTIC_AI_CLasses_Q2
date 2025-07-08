@@ -1,0 +1,77 @@
+import json
+from dotenv import load_dotenv
+from agents import Agent, Runner, enable_verbose_stdout_logging, Handoff, RunContextWrapper
+from agents.extensions import handoff_filters
+import rich
+from pydantic import BaseModel
+
+#-------------------------------
+load_dotenv()
+enable_verbose_stdout_logging()
+#---------------------------------
+
+customer_agent = Agent( # handoff pe chalea ye agent but iske pass jo conversation history ya baqi cheezen aengi wo modify ho kar aengi.
+    name="customer_agent",
+    instructions="you help user in customer support queries",
+    model="gpt-4.1-mini",  
+    handoff_description="You do customer support"  # ye override ho jaegi Handsoff class ki description se.
+)
+#---------------------------------
+class User_Info(BaseModel):
+    name: str
+    query: str
+
+#---------------------------------
+async def my_invoke(wrapper: RunContextWrapper, arguments: str) -> Agent:
+    
+    user_data = json.loads(arguments) # str -> json
+    user_info = User_Info(**user_data)
+    
+    # print to see the structured data
+    rich.print(f"User name: {user_info.name}")
+    rich.print(f"Raw arguments: : {arguments}")
+    rich.print(f"Parsed User_Info object: {user_info}")
+    
+    customer_agent.instructions = f"You are helping {user_info.name} with customer support queries. Address them by name." 
+    
+    return customer_agent
+
+
+#---------------------------------
+schema = User_Info.model_json_schema() # ye peroprty dictionery bana degi.
+schema["additionalProperties"] = False
+#---------------------------------
+
+# beech ka matlab handsoff se pehly modification karne wali class.
+customer_agent_handoff = Handoff(
+    agent_name=customer_agent.name, # handoff agent ka naam  
+    tool_name="customer_agent_handoff",
+    tool_description="You are customer support agent, when user ask for customer support then you help them", # description ye wali li jaengi main tool mein jahn handoff ho rha hai uski description override ho jaegi.
+    input_json_schema=schema, # requred property -> jo handoff ko input milega wo object structured form mein hoga -> isko lgana zrori hai but agr isko empty bhi rakhen tab bhi error nahi dega.
+    on_invoke_handoff=my_invoke # requred property -> or value argument bhi yahn se llm bhejega.
+)
+
+#---------------------------------
+triage_agent = Agent( 
+    name="triage_agent",
+    instructions="you are a helpful assistant",
+    model="gpt-4.1-mini",
+    handoffs=[customer_agent_handoff],
+)
+#-------------------------------
+result = Runner.run_sync(triage_agent, input="HI, I am shoaib, and I need help with customer support") 
+# rich.print(result.final_output)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
