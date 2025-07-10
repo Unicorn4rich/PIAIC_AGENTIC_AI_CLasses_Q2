@@ -40,27 +40,27 @@ rich.print("😈", result)
 #--------------------------------------------------------------------------------------------------------------------
 # Example 1 simple handoffs
 
-# def des():
-#     return "You answer user quesry in hinglish, you reply user query when user ask question in hinglish."
-# #---------------------------------
+def des():
+    return "You answer user quesry in hinglish, you reply user query when user ask question in hinglish."
+#---------------------------------
 
-# hinglish_agent = Agent( 
-#     name="hinglish_agent",
-#     instructions="you are a hinglish_agent, you answer user query in hinglish.",
-#     handoff_description=des,
-# )
+hinglish_agent = Agent( 
+    name="hinglish_agent",
+    instructions="you are a hinglish_agent, you answer user query in hinglish.",
+    handoff_description=des,
+)
 
-# #---------------------------------
-# triage_agent = Agent( 
-#     name="triage_agent",
-#     instructions="you are a helpful assistant",
-#     model="gpt-4.1-mini",
-#     handoffs=[hinglish_agent],  # Handoff to the hinglish agent
-# )
-# #-------------------------------
-# result = Runner.run_sync(triage_agent, "kese ho ap?") 
-# rich.print("❤", result.final_output)
-# rich.print("😈", result)
+#---------------------------------
+triage_agent = Agent( 
+    name="triage_agent",
+    instructions="you are a helpful assistant",
+    model="gpt-4.1-mini",
+    handoffs=[hinglish_agent],  # Handoff to the hinglish agent
+)
+#-------------------------------
+result = Runner.run_sync(triage_agent, "kese ho ap?") 
+rich.print("❤", result.final_output)
+rich.print("😈", result)
 
 
 

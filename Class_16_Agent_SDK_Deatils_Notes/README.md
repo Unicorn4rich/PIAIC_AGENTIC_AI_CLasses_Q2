@@ -56,13 +56,6 @@ visit this repo for aent life scycle info
 18. Same to Same RunnerHook bhi aisy hi kaam karta hai isme bhi sari cheezen Agent hook ki tarhn hoti hain 
     but ye RUnner mein pass kiyya jata hai.    
 
-PIAIC Class
-
-1. Agent ki Class LLM se kese baat karti hai kya kya propertys use hoti hain sab A-Z
-2. Agent Propertys + Agent and LLM baat cheet + Streaming
-3. Openai tracing support karta hai or -> Gemini tracing ko support nahi karta.
-
-
 ----------------------------------------------------------------------------------------------------
 Agent SDK -> Experiment
 
@@ -147,6 +140,90 @@ Agent SDK -> Experiment
 
 22. input_filter -> ye streaming mein work nahi karta.
 
+23. Handoff class ke andar -> default_tool_description -> ye agent ko by default description pass karta hai.
+
+24. handoffs ka method -> Handoff class return karta hai.
+
+@overload
+def handoff(                -> handoff method
+    agent: Agent[TContext], -> agent ka instance pass karte hain jo required hai.
+    *,
+    on_handoff: OnHandoffWithoutInput,            -> ye handoff function ko call karta hai jo required hai.
+    tool_description_override: str | None = None, -> handsoff tool ki secription over-ride karta hai.
+    tool_name_override: str | None = None,        -> tool jab llm ko milta hai ye us naam ko override karta hai.
+    input_filter: Callable[[HandoffInputData], HandoffInputData] | None = None, -> conversation history se tool calls or unka output filter karta hai. <-
+
+    is_enabled: bool | Callable[[RunContextWrapper[Any], Agent[Any]], MaybeAwaitable[bool]] = True, -> switch On/Off.
+) -> Handoff[TContext]: ...     -> ye class return karta hai.
+
+
+#-------------------------------------------------------------------------------------------------------------------
+
+1. model_settings=ModelSettings() -> ye LLM ko call karte waqt settings change karta hai or agr settings na den to ye
+    by-default settings use karta hai. Isy har Model support nahi karta pehly check karen bad mein use karen dosry llm ke liye. 
+
+2. Temprature -> temprature high -> LLM give creative answers and if temprature low -> LLM use same static answers. 
+    recommended value is 0.7 from LLMs.   
+    maximum value temperature= 0 se 2 tak hoti hai. temperature=-1 -> client se halti ho to ye error ata hai
+    -> Error code: 400 
+
+
+temperature= 0 to 2 -> pagal = Creative
+top_k= 0 to 1 million -> 10 lakh -> Model denpended tokens 
+top_p= 0 to 1       -> Choose Best Word
+
+3. temperature= maximum value 0 se 2 tak hoti hai. -> recommended value is 0.7 from LLMs.
+   temperature=-1 -> client se halti ho to ye error ata hai -> Error code: 400
+
+4. top_k= 0 to 1 million -> 10 lakh -> Model denpended tokens 
+   isme ye ya arta hai ke agr user ke (how are you) ka jawab dena hai to ye top_k ko 5 set karne ki wajah se 
+   5 words utha lega -> fine, awesome, good, okay, perfect, -> if we set in agent then have error? it is not in SDK 
+
+
+5. top_p=0 -> 0 se 1 tak iski value hoti hai 
+   words ki selection karta hai -> 5 words hain -> fine, awesome, good, okay, perfect, or ye (top_p) in sary words mein se
+   jo best ziyada suitble word hoga jiski probablity ziyada hogi usy get kar ke sentence mein lgata hai (i am fine). 
+
+
+6.  frequency_penalty -> mean words -> range (-2.0 to 2.0) but accept koi bhi number of value error nahi deta.
+    LLM ke answer mein koi word bar bar aa rha hai repatedly to ham (0.0 se 2.0) ke darmiyan rakhenge to wo repat nahi hoga.  - se nechy ki value jese -2 se 0 tak repation of words ziyada honge
+    0 se 2 tak repation of words km honge 
+    positive grater then 0 -> repation of words km honge
+    nagitive less then 0   -> repation of words ziyada honge
+
+7. presence_penalty -> means sentense
+   positive grater then 0 -> sentnse topic change honge har dafa.
+   nagitive less then 0 -> sentnse topic change nahi honge har dafa same topic use kiyya jaa sakta hai. 
+   
+8. model_settings=ModelSettings(tool_choice="greet") -> tool call karny ke bad agent terminal mein uski setting reset 
+    kar deta hai matlab turn 1 mein jo tool_choice di gai wo turn 2 mein hata di jaegi reset hogi..
+    instructions mein hamne choice sirf (greet function) ko chlany ki di isliye agent llm ko tools mein sirf greet dikhaega dosra koi function nahi.
+    isliye just greet ka output lega llm agent se iske bad jab turn 2 chlaega or sari history dubara se agent llm ko dega ke pehly hamne ye kiyya tha llm check karega ke
+    tolls mein usy ab dosry function mily hain kiyun ke wo rest ho gaye choice mein jabhi ab baqi ke function bhi use honge
+   
+#-------------------------------------------------------------------------------------------------------------------
+
+1. Input -> context window -> gpt-4.1 -> 1 Million -> 10 lakh words/tokens as a input leta hai.
+
+2. Output -> LLM ki marzi jitne alfaz/token mein hamen jawab deta hai -> isy ham (Max_tokens) ke zariye iska output
+   limit kar sakty hain. max_token km denge to km alfaz mein baat karega or agr ziyada ho to ziyada alfazo mein baat karega lambi.
+
+3. truncation= "auto" + "disabled" -> truncation input hai hmara
+  auto mean 1 million context token input or ye conversation history mein se starting or end ki history rakh kar baqi ki sari. beech ki history hata dega (truncation="auto") mein
+  (truncation="disabled") pori history rakhega or jab 1 million tokens fill ho jaenge input ya conversation mein to ye rok dega aagy ki chat ko.
+
+4. Reasoning -> sirf (o serease) ke models mein ye reasoning ko support karta hai kiyun ke wo reasning models hain 
+   uske ialwa nahi or ham is property ka use llm ke reasning ko control karne ke liye karte hain.  
+
+5. Metadata -> ye llm ko nahi jata ye bas track rakhny ke liye use hota hai developers ke ->
+   {'team': 'web-dev', 'name': 'shoaib'} 
+   is se ham agents or unke workflow ko bhi track kar sakty hain ke konsa gent kya kar rha hai.
+
+
+6. model_settings=ModelSettings(store=True)   # tracing dashboard pe show krwa rha hai is se.
+   model_settings=ModelSettings(store=False)  # tracing dashboard pe na save hoti hai or na show hoti hai is se.
+
+7. 
 
 
 
@@ -154,6 +231,12 @@ Agent SDK -> Experiment
 
 
 
+----------------------------------------------------------------------------------------------------
+
+1. Agent ki Class LLM se kese baat karti hai kya kya propertys use hoti hain sab A-Z
+2. Agent Propertys + Agent and LLM baat cheet + Streaming
+3. Openai tracing support karta hai or -> Gemini tracing ko support nahi karta.
+4. structre validation -> type adapter + dataClasses + Pydantic
 
 
 
