@@ -67,7 +67,7 @@ triage_agent = Agent(
 )
 #-------------------------------
 result = Runner.run_sync(triage_agent, input="HI, I am shoaib, and I need help with customer support") 
-# rich.print(result.final_output)
+rich.print(result.final_output)
 
 
 

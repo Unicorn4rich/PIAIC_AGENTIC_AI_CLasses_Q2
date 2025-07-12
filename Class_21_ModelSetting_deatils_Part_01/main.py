@@ -22,10 +22,10 @@ triage_agent = Agent(
     # aik sath ye 3eno propetys use nahi ho sakti.
        
     model_settings=ModelSettings(frequency_penalty=-2), # -2.0 to 2.0
-    # tools=[greet],
-    # # model_settings=ModelSettings(tool_choice="auto") # tumhari marzi tool use karna chaho ya nahi tool use hony ke bad reset ho jaye check from verbose enabled.
-    # # model_settings=ModelSettings(tool_choice="required") # lazim tool ka use karo instruction lazim deni hai warna ye tool call nahi hoga reset after tool use.
-    # # model_settings=ModelSettings(tool_choice="none") # tool call mat karo.
+    tools=[greet],
+    model_settings=ModelSettings(tool_choice="auto") # tumhari marzi tool use karna chaho ya nahi tool use hony ke bad reset ho jaye check from verbose enabled.
+    model_settings=ModelSettings(tool_choice="required") # lazim tool ka use karo instruction lazim deni hai warna ye tool call nahi hoga reset after tool use.
+    model_settings=ModelSettings(tool_choice="none") # tool call mat karo.
     
     model_settings=ModelSettings(tool_choice="greet") # tool call karny ke bad agent terminal mein uski setting reset kar deta hai matlab turn 1 mein jo tool_choice di gai wo turn 2 mein hata di jaegi reset hogi..
     # instructions mein hamne choice sirf (greet function) ko chlany ki di isliye agent llm ko tools mein sirf greet dikhaega dosra koi function nahi.
