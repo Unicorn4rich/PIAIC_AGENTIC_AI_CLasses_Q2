@@ -4,6 +4,13 @@ Tools            -> handoffs/as_tools/function_tool
 Tool_description -> tool call se aya return
 
 
+-------------------------------------------------------------------------------------------------
+1. Agent & ModelSetting, function_tool, Internal properties -> Recording class 26 starting part 1
+
+-------------------------------------------------------------------------------------------------
+
+
+
 1. Swarm ke andar just gpt ke models laga sakty thy but SDK mein GEMINI or baqi models bhi laga sakty hain
    Agent SDK upgraded version hai swarm ka.
 
@@ -21,6 +28,7 @@ Tool_description -> tool call se aya return
 
 6. input guardrails run in a multi-agent workflow -> sirf pehla agent input check karta hai user ka baqi 
    ke agent nahi karty.
+   list hai iska matlab isme multiple cheezo ko rokny ke liye guardrail lgaya jaa sakta hai phir kisi bhi aik mein error aya to sara program ruk jaega.
 
 7. guardrails -> agent ke sath paralel chalty hain matlab user ne kuch kaha runner agent ko us question ke
    jawab ke liye chala deta hai or same time guardrail bhi chal jata hai ke input jo aya hai user ka kya 
@@ -28,6 +36,10 @@ Tool_description -> tool call se aya return
 
 8. guardrail function kya return karta hai? -> ye return karta hai (GuardrailFunctionOutput) jo ke 
    OpenAI se import hoti hai ye class.
+   Input guardrail sirf first agent pe work karta hai kisi or pe nahi
+   Output guardrail sab agents mein lgaty hain taky jo llm response laye usme wo bhi ghalat baat na akr rha ho 
+    or jo agent jawab dega output guardrail wahn pe chal jata hai llm se output any ke bad bhi.
+  
 
 9. sandboxed environment?  -> Agent SDK ka CodeInterpreterTool
 
@@ -223,13 +235,11 @@ top_p= 0 to 1       -> Choose Best Word
 6. model_settings=ModelSettings(store=True)   # tracing dashboard pe show krwa rha hai is se.
    model_settings=ModelSettings(store=False)  # tracing dashboard pe na save hoti hai or na show hoti hai is se.
 
-7. 
+7. tool_use_behavior="stop_on_first_tool",
 
-
-
-
-
-
+   turn 1 agent apni sari cheeze ley kar llm ke pass gaya jisme uske functions bhi thy jinme paramter required thy llm ne un function tools ke schema mein paramters ki value return kar ke bheji ke in functions ko chala do phir usi 1 turn ke andar hi ye function chal jaty hain un values ke sath or return krwa dety hain apna output or agr 
+   hamne (tool_use_behavior="stop_on_first_tool") lgaya hua hai to phir ye user ne input mein jis tool ko pehly mention kiyya hoga sirf uska result show hoga final output mein or wahi user ko diyya jaega jese aya.
+   But agr ham (tool_use_behavior="stop_on_first_tool") nahi lgate to un function ka jo  return aya hai usko(turn=2) mein mein dubara llm ko diyya jata hai phir llm un answers mein thori or modification karta hai or user ko jawab dey deta hai.
 
 ----------------------------------------------------------------------------------------------------
 
@@ -237,6 +247,10 @@ top_p= 0 to 1       -> Choose Best Word
 2. Agent Propertys + Agent and LLM baat cheet + Streaming
 3. Openai tracing support karta hai or -> Gemini tracing ko support nahi karta.
 4. structre validation -> type adapter + dataClasses + Pydantic
+
+----------------------------------------------------------------------------------------------------
+1. 
+
 
 
 
@@ -414,6 +428,12 @@ Exported 2 items
 PS D:\GOVERNER HOUSE\SIR TAHA CLASSES\PIAIC_AGENTIC_AI_CLasses_Q2\Class_19_handoff_details_Code_2> 
 
 
+
+----------------------------------------------------------------------------------------------------
+MCP -> Model + Context + Protocol  = Repo -> learn-agentic-ai/03_ai_protocols/01_mcp/01_http_theory
+
+1. Client -> (Mobile, Desktop) jinke pass ye protocol hoty hain (ip, tcp, http/https) ye internet ka use karty
+   huy hmare server ko request bhejte hain hmara server wapas response deta hai client ko.
 
 
 

@@ -20,7 +20,7 @@ class BookInfo(BaseModel): # hmara jo agent hai wo is structure ke andar jawab d
 agent = Agent(
     model="gpt-4.1-mini",
     name="my_agent",
-    instructions="you are a weather agent",
+    instructions="you are a Books expert agent",
     output_type=BookInfo,  # yahan humne output type ko BookInfo class se link kiya hai taky structure wesa ho jesa ham chahty hain.
     tools=[WebSearchTool()] # normally LLM se ham paksitani book (khushbu) dhond nahi paa rhy the phir jab hamne WebSearchTool use kiya to hamen wo book or uski details mil gai.
 )
@@ -31,7 +31,7 @@ while True:
     user_input = input("Enter your question: ")
     result = Runner.run_sync(agent, user_input)
 
-    db.append(result.final_output.model_dump()) # ab ham result ko database mein store kar rhy hain.
+    db.append(result.final_output.model_dump()) # ab ham result ko database mein store kar rhy hain dictionory bana kar.
     rich.print(db) # ab hamara database print hoga jo ke ek list hai aur ismein hamaray results store honge.
 
     

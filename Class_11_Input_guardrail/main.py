@@ -20,10 +20,10 @@ guardrail_agent = Agent(
 )
 #-----------------------
 
-@input_guardrail # ye decorator import karna parta hai guardrail lgane ke liye.
+@input_guardrail # ye decorator import karna parta hai guardrail lgane ke liye.       isme ham object ya imae ya file ki shakal mein input dey sakty hain
 async def slangs_guardrails(ctx: RunContextWrapper[None], agent: Agent, input: str | list[TResponseInputItem]) -> GuardrailFunctionOutput:
     
-    result = await Runner.run(guardrail_agent, input, context=ctx.context)
+    result = await Runner.run(guardrail_agent, input, context=ctx.context) # ye purani ya currunt agent ki info hai agly agent ko pass karne ke liye.
     
     return GuardrailFunctionOutput(
         output_info = result.final_output,

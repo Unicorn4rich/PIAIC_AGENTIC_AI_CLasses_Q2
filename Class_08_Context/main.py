@@ -14,7 +14,7 @@ class User_info():  # this is class object
     address: str
     
 # instance/object of User_info class jo ham RUnner ko pass karenge.
-user_information = User_info("shoaib", 23, "Gaaoun")
+user_information = User_info("shoaib", 23, "karachi")
 
 #-----------------------------------------
 

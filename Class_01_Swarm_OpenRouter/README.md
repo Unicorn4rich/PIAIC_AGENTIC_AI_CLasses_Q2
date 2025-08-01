@@ -1,8 +1,5 @@
 # Swarm aur OpenAI Agents SDK Notes
 
-Ye notes *Swarm framework* aur *OpenAI Agents SDK* ke bare mein simple Roman Urdu mein hain. Short aur seedhi samajh ke liye banaye gaye hain, taake ek student asani se samajh le.
-
----
 
 ## Swarm Kya Hai?
 

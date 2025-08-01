@@ -56,7 +56,7 @@ agent = Agent[User_info](
     name="my_agent",
     instructions="You are a helpful assistant",
     model="gpt-4.1-mini",
-    # hooks=CustomAgentHook()
+    hooks=CustomAgentHook()
 )
 
 #---------------------------------------------------------    

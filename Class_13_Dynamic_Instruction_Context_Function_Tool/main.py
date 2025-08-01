@@ -24,7 +24,7 @@ DB = ["shoiab", "azlaan", "ali", "usman", "sami"] # ye hamara database hai jahan
 
 #---------------------------------------------------------
 # LLM Context 
-# llm ko agent bhejta hai ye 4 cheezen User prompt, System prompt, Tools, Tool mein likha hua msg dock string wala. 
+# llm ko agent bhejta hai ye 4 cheezen User prompt, System prompt, Tools, Tool description, yani Tool mein likha hua msg dock string wala. 
          
 @function_tool
 def user_age(ctx: RunContextWrapper[User_info]):
@@ -66,6 +66,7 @@ print(result.final_output) # The name of the user is Azlaan.
 # 3. @function_tool # ye agent ko ye wala function schema bana kar bhejta hai
 # 4. uv add function_schema => install this  
 # is tarhn pass hota hai ye function schema bana kar agent ko.
+
 # {
 #   "name": "dynamic_instruction",
 #   "description": "This is a function of dynamic_instruction ",

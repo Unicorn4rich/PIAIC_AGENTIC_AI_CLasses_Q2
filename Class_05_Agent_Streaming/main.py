@@ -38,7 +38,7 @@ async def main(message: cl.Message):
     
     history.append({"role": "user", "content": history})
     
-    response_message = cl.Message(content="")
+    response_message = cl.Message(content="") #aik empty message object banata hai jo UI me live streaming ke liye placeholder hai.
      
     # run_streamed => LLM direct apne pass code likh kar hamen screen par show krwa deta tha but (run_streamed) se ham wo jese line by line likhta jaea hamen wo code display hota jaega.
     LLM_answer = Runner.run_streamed(starting_agent=agent, input=user_question) # agentic loop => agent ke kehny pe jab LLM jawab create karta hai to 1/2 lines likh kar loop rok deta hai phir dubara kuch lines likhkar loop rok deta hai aisy chalta rehta hai.
@@ -51,7 +51,7 @@ async def main(message: cl.Message):
         if event.type == "raw_response_event" and isinstance(event.data, ResponseTextDeltaEvent):
             # sari lines aik aik word ban kar hamen delta ke andar milti hain.
             # rich.print(event.data.delta, end="", flush=True)  #
-            await response_message.stream_token(event.data.delta)
+            await response_message.stream_token(event.data.delta) # har streaming token ko turant UI me display karta hai, live typing effect banata hai.
 
    
 

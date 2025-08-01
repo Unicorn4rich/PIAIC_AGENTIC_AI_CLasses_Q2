@@ -1,9 +1,8 @@
 # This is => 2. RUN LEVEL
 
 import os
-from agents.run import RunConfig
 from dotenv import load_dotenv 
-from agents import Agent, Runner, OpenAIChatCompletionsModel, AsyncOpenAI, set_tracing_disabled, set_default_openai_client, set_default_openai_api  
+from agents import Agent, Runner, AsyncOpenAI, set_tracing_disabled, set_default_openai_client, set_default_openai_api  
 
 #----------------------------------------------------------------------------
 
@@ -11,6 +10,7 @@ load_dotenv() # env file ke andar rakhi keys is se mangwaty hain.
 
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 set_tracing_disabled(True)
+
 set_default_openai_api("chat_completions")
 
 #----------------------------------------------------------------------------

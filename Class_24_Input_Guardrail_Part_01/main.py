@@ -13,7 +13,7 @@ class Weather_pydantic(BaseModel):
     city: str
 
 # ---------------------------------
-without function_tool create function
+# without function_tool create function
 
 def weather_tool(city: str):
     return f"{city} weather is sunny"

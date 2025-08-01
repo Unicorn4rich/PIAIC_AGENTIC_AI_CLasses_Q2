@@ -73,7 +73,7 @@ class Prime_minister_check(BaseModel):
 
 guardrail_agent = Agent(
     name="Guardrail Agent",
-    instructions="you always check is user is askingabout prime minister",
+    instructions="you always check is user is asking about prime minister",
     model="gpt-4.1-mini",
     output_type=Prime_minister_check
 )
